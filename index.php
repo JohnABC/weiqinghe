@@ -4,6 +4,7 @@ define('W_DATE', date('Y-m-d', W_TIME));
 define('W_HOST', $_SERVER['HTTP_HOST']);
 define('W_ROOT_PATH', dirname(__FILE__));
 
+
 define('YII_DEBUG', True);
 define('YII_TRACE_LEVEL', 3);
 
