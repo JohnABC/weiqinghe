@@ -9,15 +9,15 @@ return array(
     		),
     	),
         'db' => array(
-            'class' => 'system.db.CDbConnection', // 'class' => 'system.db.CDbConnection',
-            'connectionString' => 'mysql:host=127.0.0.1;dbname=newtheone',
-            'schemaCachingDuration' => 432000, //60*60*12
+            'class' => 'system.db.CDbConnection',
+            'connectionString' => 'mysql:host=127.0.0.1;dbname=weiqinghe',
+            'schemaCachingDuration' => 432000,
             'emulatePrepare' => True,
             'enableProfiling' => False,
             'username' => 'root',
-            'password' => 'Qumaiya520',
+            'password' => '',
             'charset' => 'utf8',
-            'tablePrefix' => 'v2_',
+            'tablePrefix' => 'wqh_',
         )
     )
 );

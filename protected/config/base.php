@@ -1,7 +1,7 @@
 <?php
 return array(
     'basePath' => W_ROOT_PATH . '/protected',
-    'name' => '【去买票】火车票,火车票查询,火车票订购,机票查询,特价机票,打折飞机票-去买票Qumaipiao.com',
+    'name' => '【微清河】 - 城市生活社区门户,微清河weiqinghe.com',
     'preload' => array('log'),
     'import' => array(
         'application.models.*',
@@ -9,8 +9,7 @@ return array(
         'application.dicts.*',
     ),
     'modules' => array(
-        'flight',
-        'api',
+        'weixin',
         'admin',
         'gii' => array(
             'class' => 'system.gii.GiiModule',
@@ -20,16 +19,11 @@ return array(
     ),
     'components' => array(
         'request' => array(
-            'csrfTokenName' => 'qumaiyaToken',
+            'csrfTokenName' => 'weiqingheToken',
         ),
         'urlManager' => array(
             'urlFormat' => 'path',
-            'showScriptName' => False,
-            'rules'=>array(
-                    'flight/wx/booking/<from:.+>-<to:.+>/<date:.*>'=>'flight/wx/booking',
-                    'flight/wx/buy/<from:.+>-<to:.+>/<date:.*>/<flightNo:.+>/<subCabin:.+>'=>'flight/wx/buy',
-                    'flight/wx/orderList'=>'flight/wx/orderList',
-            )
+            'showScriptName' => False
         ),
         'errorHandler' => array(
             // use 'site/error' action to display errors
@@ -48,18 +42,13 @@ return array(
 			        'categories' => 'dberror.*',
 			        'logFile' => 'dberror.log',
 			    ),
-//                array(
-//                    'class'=>'CWebLogRoute'
-//                )
 			),
 		),
     ),
 
-    // application-level parameters that can be accessed
-    // using Yii::app()->params['paramName']
     'params' => array(
-        'adminEmail' => 'wangbendong@meiti.com',
-        'keyword' => '火车票预订、火车票查, 询机票, 机票预订',
-        'des' => '去买票! qumaipiao.com, 致力于做最好的网上订票服务平台, 提供火车票预订、火车票查询、机票预订、机票查询等服务。',
+        'adminEmail' => 'weiqinghe@yilexun.com',
+        'keyword' => '微清河,微清河网,清河,清河县,清河吧,清河租房,清河社区',
+        'des' => '微清河（www.weiqinghe.com），清河县“自行开版、自行管理、自行发展”的开放式社区平台，致力于为各地用户提供便捷的生活交流空间与本地生活服务平台。',
     ),
 );

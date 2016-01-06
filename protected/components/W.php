@@ -9,7 +9,7 @@ class W {
     const ENV_TEST_DOMAIN_PREFIX = 'new.';
     const ENV_MOBILE_DOMAIN_PREFIX = 'm.';
     const ENV_LOCAL_DOMAIN = 'wqh';
-    const ENV_PRODUCT_DOMAIN = 'weiqinghe';
+    const ENV_PRODUCT_DOMAIN = 'suiyongjie';
     const ENV_DOMAIN_SUFFIX = '.com';
     
     const PLATFORM_MOBILE = 'm';
@@ -128,127 +128,6 @@ class W {
     
     public static function isCorrect($res) {
         return $res['rc'] == Rc::RC_SUCCESS;
-    }
-    
-    public static function getArrayByKeys($keys, $params) {
-        $rtn = array();
-        foreach ($keys as $key => $v) {
-            if ((is_array($params) && isset($params[$key])) || (is_object($params) && isset($params->$key))) {
-                $value = is_array($params) ? $params[$key] : $params->$key;
-                $rtn[$key] = is_array($v) ? self::getArrayByKeys($v, $value) : $value;
-            } else {
-                $rtn[$key] = Null;
-            }
-        }
-        
-        return $rtn;
-    }
-    
-    public static function getArrayChangeKeys($params, $k2k) {
-        $rtn = array();
-        foreach ($k2k as $k => $v) {
-            if (is_array($k2k)) {
-                $rtn[$v] = isset($params[$k]) ? $params[$k] : Null;
-            } else {
-                $rtn[$v] = isset($params->$k) ? $params->$k : Null;
-            }
-            
-        }
-        return $rtn;
-    }
-    
-    public static function staticEvaluateExpression($_expression_, $_data_=array()) {
-        extract($_data_);
-        return eval('return ' . $_expression_ . ';');
-    }
-    
-    public static function checkParamCall($params, $k, $format) {
-        return is_string($format) ? self::staticEvaluateExpression($format . '($params[$k])', array('params' => $params, 'k' => $k)) : call_user_func($format, $params[$k]);
-    }
-    
-    public static function checkParam($params, $k, $format) {
-        if ($isNot = !strncmp($format, '!', 1)) {
-            $format = substr($format, 1);
-        }
-        
-        if (!($isCanRef = in_array(substr($format, -5), array('isset', 'empty'))) && !isset($params[$k])) {
-            return $isNot ^ False;
-        }
-        
-        if ($isArr = substr($format, 0, 6) == 'array(') {
-            $format = self::staticEvaluateExpression($format);
-        }
-        
-        if (is_callable($format) || $isCanRef) {//isset, empty等不能用is_callable
-            return $isNot ^ self::checkParamCall($params, $k, $format);
-        } elseif (!strncmp($format, '/', 1) && !strncmp($format{strlen($format) - 1}, '/', 1)) {
-            return $isNot ^ preg_match($format, $params[$k]);
-        } elseif ($params[$k] !== $format) {
-            return $isNot ^ False;
-        }
-
-        return $isNot ^ False;
-    }
-    
-    public static function checkParams($params, $formats, $isRtnFormatKeys = True) {
-        $rtn = $isRtnFormatKeys ? array() : $params;
-        foreach ($formats as $k => $format) {
-            $isOr = $isAssign = False;
-            if (strstr($format, '&&')) {
-                $formatArr = explode('&&', $format);
-            } elseif (strstr($format, '||')) {
-                $formatArr = explode('||', $format);
-                $isOr = True;
-            } else if (strstr($format, '--')) {
-                $formatArr = explode('--', $format);
-                $isAssign = True;
-            } else {
-                $formatArr = array($format);
-            }
-            
-            $indexMax = count($formatArr) - 1;
-            foreach ($formatArr as $index => $subFormat) {
-                if (self::checkParam($params, $k, $subFormat)) {
-                    if ($isAssign) {//是则赋值, 否则表示值正确
-                        $rtn[$k] = $formatArr[$index + 1];
-                        break;
-                    } else {
-                        $rtn[$k] = $params[$k];
-                        if ($isOr) {
-                            break;
-                        }
-                    }
-                } else {
-                    if ($isOr && $index < $indexMax) {
-                        continue;
-                    } elseif ($isAssign) {
-                        $rtn[$k] = $params[$k];
-                        break;
-                    } elseif (!$isAssign) {
-                        self::log('Qmy::checkParams Error', $k.'_'.$format.'__'.$params[$k]);
-                        //echo $k, '<br />', $format, '<br />', $params[$k];exit;
-                        return False;
-                    }
-                }
-            }
-        }
-        
-        return $rtn;
-    }
-    
-    public static function mergeArrayWithoutInt() {
-        $args = func_get_args();
-        $res = array_shift($args);
-        while (!empty($args)) {
-            $next = array_shift($args);
-            foreach($next as $k => $v) {
-                if(is_array($v) && isset($res[$k]) && is_array($res[$k]))
-                    $res[$k]=self::mergeArrayWithoutInt($res[$k],$v);
-                else
-                    $res[$k]=$v;
-            }
-        }
-        return $res;
     }
     
     public static function log($message = '', $cat = 'backend', $request = False,  $level = CLogger::LEVEL_ERROR){
