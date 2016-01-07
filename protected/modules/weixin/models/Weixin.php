@@ -2,7 +2,7 @@
 class Weixin {
     public static function getXMLData() {
         $postData = file_get_contents('php://input');
-        if (!empty($postData) || !($postData = simplexml_load_string($postData))) {
+        if (!empty($postData) || !($postData = simplexml_load_string($postData, 'SimpleXMLElement', LIBXML_NOCDATA))) {
             return W::errReturn(Rc::RC_WX_XML_ERROR);
         }
         
